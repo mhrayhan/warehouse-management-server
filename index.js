@@ -54,6 +54,15 @@ async function run(){
             res.send(result);
 
         })
+        // Item collectiton api
+        app.get('items', async(req, res) => {
+            const email = req.query;
+            console.log(email);
+            const query = {email: email};
+            const cursor = itemsCollection.find(query);
+            const item = await cursor.toArray();
+            res.send(item);
+        })
     }
     finally{
 
