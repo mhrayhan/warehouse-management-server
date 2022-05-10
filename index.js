@@ -25,6 +25,7 @@ async function run(){
             const item = await cursor.toArray();
             res.send(item);
         })
+
         // get single data from mongoDb by id
         app.get('/items/:id', async(req, res) => {
             const id = req.params.id;
@@ -33,12 +34,14 @@ async function run(){
             const items = await itemsCollection.findOne(query);
             res.send(items);
         } )
+
         // POST -> input data store in mongoDb server
         app.post('/items', async(req, res) => {
             const newItem = req.body;
             const result = await itemsCollection.insertOne(newItem);
             res.send(result);
         })
+
         //UPDATE USER 
        app.put('/items/:id', async(req, res) =>{
             const id = req.params.id;
@@ -54,19 +57,27 @@ async function run(){
             res.send(result);
 
         })
+
         // Item collectiton api
         app.get('items', async(req, res) => {
-            const email = req.query;
-            console.log(email);
+            const email = req.query.email;
             const query = {email: email};
             const cursor = itemsCollection.find(query);
             const item = await cursor.toArray();
             res.send(item);
         })
-    }
-    finally{
+
+    // DELETE 
+      app.delete('/items/:id', async(req, res) => {
+      const id = req.params.id;
+      const query = {_id: ObjectId(id)};
+      const result = await itemsCollection.deleteOne(query);
+      res.send(result);
+    })
 
     }
+
+    finally{}
 }
 run().catch(console.dir);
 
